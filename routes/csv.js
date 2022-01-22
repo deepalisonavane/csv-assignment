@@ -4,18 +4,19 @@ const multer  = require('multer')
 
 const { csvUpload } = require('../controllers/csv.js');
 
+global.__basedir = __dirname;
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'uploads')
+    destination: (req, file, cb) => {
+        cb(null, __basedir + '/uploads/')
     },
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname);
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
     }
   })
 
 const upload = multer({ storage: storage }).single('csvfile');
 
-router.post('/csv-upload', upload, csvUpload);
+router.post('/csv_upload', upload, csvUpload);
 
 module.exports = router;

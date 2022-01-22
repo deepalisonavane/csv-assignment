@@ -8,17 +8,20 @@ const app = express();
 
 // Routes
 const csvRoute = require('./routes/csv.js');
+const customerRoute = require('./routes/customer.js');
 
 mongoose
     .connect('mongodb://localhost:27017/csvtask')
     .then(() => console.log('DB CONNECTS SUCCESSFULLY'))
     .catch((error) => console.error('DB GOT CRASH'));
 
-    // Middlewares used
-    app.use(bodyParser.json());
+// Middlewares used
 
-    app.use('/api', csvRoute);
+app.use(bodyParser.json());
 
-    const port = process.env.PORT || 3000;
+app.use('/api', csvRoute);
+app.use('/api', customerRoute);
 
-    app.listen(port, () => console.log(`App listening on port ${port}!`));
+const port = process.env.PORT || 3000
+
+app.listen(port, () => console.log(`App listening on port ${port}!`));
